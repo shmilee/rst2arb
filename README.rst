@@ -35,7 +35,7 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
         -V cjk=yes -V documentclass=[article|report] -V mainfont=Arial \
         -V monofont='Courier New' -V sansfont='Times New Roman' \
         -V geometry:left=2cm,right=2cm,top=2.5cm,bottom=2.5cm \
-        README.rst -o README.pdf
+        -V date='\today' README.rst -o README.pdf
 
 * 生成 beamer :
 

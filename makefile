@@ -1,6 +1,6 @@
 test_latex_option = -f rst --template=latex-cjk.tex --latex-engine=xelatex -N --toc -V cjk=yes \
 					-V mainfont=Arial -V monofont='Courier New' -V sansfont='Times New Roman' \
-					-V geometry:left=2cm,right=2cm,top=2.5cm,bottom=2.5cm
+					-V geometry:left=2cm,right=2cm,top=2.5cm,bottom=2.5cm -V date='\today'
 
 local_TEXMFHOME = ./texmf
 TEXMFHOME = $(shell kpsewhich -var-value=TEXMFDIST)
