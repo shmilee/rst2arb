@@ -21,7 +21,7 @@ if pandoc -v 2>&1 >/dev/null; then
         echo "----- colorThemes -----"
         colorthemes="$(find $DIR -name 'beamercolortheme*.sty' | sed 's|^.*/beamercolortheme||;s|\.sty$||')"
         for c in $colorthemes; do
-            echo "colorTheme: ${t}"
+            echo "colorTheme: ${c}"
             pandoc ${common_option} -V colortheme=$c README.rst -o cache/test-colortheme-${c}.pdf
         done
     else
