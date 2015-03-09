@@ -1,0 +1,37 @@
+% xelatex cjk font style 1
+
+\ProvidesPackage{cjkfont1}
+\RequirePackage{fontspec}
+\RequirePackage[boldfont,slantfont,CJKchecksingle]{xeCJK}
+
+% 中文断行
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+%\linespread{1.2}\selectfont % 行距
+%\setlength{\parskip}{200pt} % 段落間距
+% 全角
+\punctstyle{quanjiao}
+
+% 将系统字体名映射为逻辑字体名称
+\newcommand\fontwenquanyi{WenQuanYi Micro Hei}
+\newcommand\fontwenquanyimono{WenQuanYi Micro Hei Mono}
+\newcommand\fontfangsong{FangSong}
+\newcommand\fontyahei{Microsoft YaHei}
+\newcommand\fonthei{SimHei}
+\newcommand\fontsong{SimSun}
+\newcommand\fontkai{KaiTi}
+% 设置中文字体
+\setCJKmainfont[BoldFont=\fonthei,ItalicFont=\fontfangsong]{\fontsong}
+\setCJKsansfont[BoldFont=\fonthei]{\fontkai}
+\setCJKmonofont{\fontwenquanyimono}
+
+%English Fonts
+%\newcommand\fontdejavu{DejaVu Sans}  
+%\newcommand\fontroman{Times New Roman}  
+%\newcommand\fontconsolas{Consolas}
+%\newcommand\fontcourier{Courier New}
+%\newcommand\fontarial{Arial}
+%% set English Font
+%\setmainfont[ItalicFont=\fontarial]{\fontroman}
+%\setsansfont{\fontdejavu}
+%\setmonofont{\fontconsolas}

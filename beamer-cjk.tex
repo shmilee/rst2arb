@@ -19,13 +19,9 @@ $endif$
   \usepackage{fontspec,xltxtra,xunicode}
   \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
   \newcommand{\euro}{€}
-   % SUPPORT for Chinese
-  $if(cjk)$
-    \usepackage[boldfont,slantfont,CJKchecksingle]{xeCJK}
-    \punctstyle{quanjiao}
-    \setCJKmainfont{WenQuanYi Micro Hei} 
-    \setCJKsansfont{KaiTi}
-    \setCJKmonofont{SimSun}
+  % SUPPORT for Chinese
+  $if(cjkfont)$
+  \usepackage{$cjkfont$}
   $endif$
 \else
   \ifluatex

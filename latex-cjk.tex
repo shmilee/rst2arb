@@ -21,18 +21,9 @@ $endif$
     \usepackage{mathspec}
     \usepackage{xltxtra,xunicode}
     % SUPPORT for Chinese
-    $if(cjk)$
-      \usepackage[boldfont,slantfont,CJKchecksingle]{xeCJK}
-      \punctstyle{quanjiao}
-      \setCJKmainfont{WenQuanYi Micro Hei} 
-      \setCJKsansfont{KaiTi}
-      \setCJKmonofont{SimSun}
+    $if(cjkfont)$
+    \usepackage{$cjkfont$}
     $endif$
-    %\linespread{1.2}\selectfont % 行距
-    %\XeTeXlinebreaklocale "zh" % 針對中文自動換行
-    %\XeTeXlinebreakskip = 0pt plus 1pt % 字與字之間加入0pt至1pt的間距，確保左右對整齊
-    %\parindent 20em % 段落縮進
-    %\setlength{\parskip}{200pt} % 段落之間的距離
   \else
     \usepackage{fontspec}
   \fi

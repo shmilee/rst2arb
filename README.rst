@@ -27,13 +27,17 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
 使用
 ========
 
+.. code:: bash
+
+    make pre
+    export TEXMFHOME=./texmf
+
 * 生成 article, report：
   
 .. code:: bash
 
     pandoc -f rst --template=latex-cjk.tex --latex-engine=xelatex -N --toc \  
-        -V cjk=yes -V documentclass=[article|report] -V mainfont=Arial \
-        -V monofont='Courier New' -V sansfont='Times New Roman' \
+        -V cjkfont=cjkfont1 -V documentclass=[article|report] \
         -V geometry:left=2cm,right=2cm,top=2.5cm,bottom=2.5cm \
         -V date='\today' README.rst -o README.pdf
 
@@ -41,9 +45,8 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
 
 .. code:: bash
 
-    export TEXMFHOME=./texmf
     pandoc -f rst --template=beamer-cjk.tex --latex-engine=xelatex -t beamer \
-        -V cjk=yes -V theme=m -V colortheme=solarized -V date='\today' \
+        -V cjkfont=cjkfont1 -V theme=m -V colortheme=solarized -V date='\today' \
         README.rst -o README.pdf
 
 
@@ -62,12 +65,8 @@ FAQ
 .. code:: latex
 
     % SUPPORT for Chinese
-    $if(cjk)$
-      \usepackage[boldfont,slantfont,CJKchecksingle]{xeCJK}
-      \punctstyle{quanjiao}
-      \setCJKmainfont{WenQuanYi Micro Hei} 
-      \setCJKsansfont{KaiTi}
-      \setCJKmonofont{SimSun}
+    $if(cjkfont)$
+      \usepackage{$cjkfont$}
     $endif$
 
 beamer 的 theme colortheme 可设定值有那些？
