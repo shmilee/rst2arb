@@ -2,7 +2,7 @@
 
 _gitname="rst2arb"
 pkgname=rst2arb
-pkgver=0.6.bc46bf3
+pkgver=0.7.3971e1b
 pkgrel=1
 pkgdesc="Convert ReST to article, report and beamer."
 license=('GPL')

@@ -16,7 +16,7 @@ Options:
 Options passed to pandoc:
   -V KEY[:VALUE] set variable in template of Tex
 
-default values for all:
+default values(no space) for all:
   date:'\today'
   cjkfont:'cjkfont1'
 default values for article and report:
@@ -72,7 +72,7 @@ while true; do
         -b)  OPER+='B ' ;;
         -c)  shift; COLOR_THEME=$1 ;;
         -t)  shift; THEME=$1 ;;
-        -V)  shift; V_OPTION+="-V $(echo $1 | sed "s|:|:\'|")' " ;;
+        -V)  shift; V_OPTION+="-V $1 " ;;
         -l)  list_all; exit 0 ;;
         -h)  usage; exit 0 ;;
         --)  OPT_IND=0; shift; break ;;
@@ -83,13 +83,13 @@ done
 
 # -V default values
 if ! echo $V_OPTION | grep -E 'cjkfont[:=]' 2>&1 >/dev/null; then
-    V_OPTION+="-V cjkfont:'cjkfont1' "
+    V_OPTION+="-V cjkfont:cjkfont1 "
 fi
 if ! echo $V_OPTION | grep -E 'date[:=]' 2>&1 >/dev/null; then
-    V_OPTION+="-V date:'\today' "
+    V_OPTION+="-V date:\today "
 fi
 if ! echo $V_OPTION | grep -E 'geometry[:=]' 2>&1 >/dev/null; then
-    V_OPTION+="-V geometry:'left=2cm,right=2cm,top=2.5cm,bottom=2.5cm' "
+    V_OPTION+="-V geometry:left=2cm,right=2cm,top=2.5cm,bottom=2.5cm "
 fi
 COLOR_THEME=${COLOR_THEME:-default}
 THEME=${THEME:-default}
@@ -124,7 +124,7 @@ for FILE in $@; do
                 ;;
             R)
                 echo " -> Report ..."
-                echo pandoc $r_option "$FILE" -o "${OUT}-report.pdf"
+                pandoc $r_option "$FILE" -o "${OUT}-report.pdf"
                 ;;
             B)
                 echo " -> Beamer ..."
