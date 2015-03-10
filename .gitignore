@@ -1,3 +1,6 @@
 ~
 cache/*.pdf
 texmf/
+build-arch/*
+!build-arch/PKGBUILD
+!build-arch/texlive.install

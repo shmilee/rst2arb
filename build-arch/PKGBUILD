@@ -1,0 +1,31 @@
+# Maintainer: shmilee <echo c2htaWxlZS56anVAZ21haWwuY29tCg==|base64 -d>
+
+_gitname="rst2arb"
+pkgname=rst2arb
+pkgver=0.6.bc46bf3
+pkgrel=1
+pkgdesc="Convert ReST to article, report and beamer."
+license=('GPL')
+arch=(any)
+depends=('texlive-langcjk' 'pandoc')
+url='https://github.com/shmilee/rst2arb'
+source=("git://github.com/shmilee/${_gitname}.git")
+install=texlive.install
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/$_gitname"
+  echo -n "0.$(git rev-list --count HEAD)."
+  git describe --always|sed 's|-|.|g'
+}
+
+build() {
+  cd "$srcdir/$_gitname"
+  make
+  make pre
+}
+
+package() {
+  cd "$srcdir/$_gitname"
+  make DESTDIR="$pkgdir" install
+}
