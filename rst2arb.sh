@@ -8,6 +8,7 @@ Options:
   -a          convert to article
   -r          convert to report
   -b          convert to beamer
+  -s          output TeX source too
   -c <theme>  set beamer colortheme
   -t <theme>  set beamer theme
   -l          list available themes
@@ -27,7 +28,7 @@ default values for beamer:
 Output FileName:
   InputName-article.pdf | InputName-report.pdf | InputName-beamer.pdf
 Example:
-  a.rst --> a-beamer.pdf
+a.rst --> a-beamer.pdf (a-beamer.tex)
 EOF
 }
 
@@ -55,7 +56,7 @@ list_all () {
 }
 
 # Options
-OPT_SHORT="abc:hlrt:V:"
+OPT_SHORT="abc:hlrst:V:"
 if ! OPT_TEMP="$(getopt -q -o $OPT_SHORT -- "$@")";then
     usage;exit 1
 fi
@@ -64,11 +65,13 @@ unset OPT_SHORT OPT_TEMP
 
 OPER=''
 V_OPTION=''
+SRC='no'
 while true; do
     case $1 in
         -a)  OPER+='A ' ;;
         -r)  OPER+='R ' ;;
         -b)  OPER+='B ' ;;
+        -s)  SRC='yes' ;;
         -c)  shift; COLOR_THEME=$1 ;;
         -t)  shift; THEME=$1 ;;
         -V)  shift; V_OPTION+="-V $1 " ;;
@@ -117,14 +120,26 @@ for FILE in $@; do
             A)
                 echo " -> Article ..."
                 pandoc $a_option "$FILE" -o "${OUT}-article.pdf"
+                if [[ $SRC == yes ]]; then
+                    echo " -> TeX for article ..."
+                    pandoc $a_option "$FILE" -o "${OUT}-article.tex"
+                fi
                 ;;
             R)
                 echo " -> Report ..."
                 pandoc $r_option "$FILE" -o "${OUT}-report.pdf"
+                if [[ $SRC == yes ]]; then
+                    echo " -> TeX for report ..."
+                    pandoc $r_option "$FILE" -o "${OUT}-report.tex"
+                fi
                 ;;
             B)
                 echo " -> Beamer ..."
                 pandoc $b_option "$FILE" -o "${OUT}-beamer.pdf"
+                if [[ $SRC == yes ]]; then
+                    echo " -> TeX for beamer ..."
+                    pandoc $b_option "$FILE" -o "${OUT}-beamer.tex"
+                fi
                 ;;
             *)
                 msg "Unknown option."
