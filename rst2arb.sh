@@ -17,7 +17,6 @@ Options passed to pandoc:
   -V KEY[:VALUE] set variable in template of Tex
 
 default values(no space) for all:
-  date:'\today'
   cjkfont:'cjkfont1'
 default values for article and report:
   geometry:'left=2cm,right=2cm,top=2.5cm,bottom=2.5cm'
@@ -84,9 +83,6 @@ done
 # -V default values
 if ! echo $V_OPTION | grep -E 'cjkfont[:=]' 2>&1 >/dev/null; then
     V_OPTION+="-V cjkfont:cjkfont1 "
-fi
-if ! echo $V_OPTION | grep -E 'date[:=]' 2>&1 >/dev/null; then
-    V_OPTION+="-V date:\today "
 fi
 if ! echo $V_OPTION | grep -E 'geometry[:=]' 2>&1 >/dev/null; then
     V_OPTION+="-V geometry:left=2cm,right=2cm,top=2.5cm,bottom=2.5cm "
