@@ -2,12 +2,12 @@
 
 _gitname="rst2arb"
 pkgname=rst2arb
-pkgver=0.9.7267955
+pkgver=0.14
 pkgrel=1
 pkgdesc="Convert ReST to article, report and beamer."
 license=('GPL')
 arch=(any)
-depends=('texlive-langcjk' 'pandoc')
+depends=('texlive-langcjk' 'pandoc' 'python')
 url='https://github.com/shmilee/rst2arb'
 source=("git://github.com/shmilee/${_gitname}.git"
         "git+https://github.com/jrnold/beamercolorthemesolarized.git"
@@ -31,7 +31,6 @@ prepare() {
 
 build() {
   cd "$srcdir/$_gitname"
-  make
   make pre
 }
 

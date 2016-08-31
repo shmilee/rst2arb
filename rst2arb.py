@@ -13,7 +13,7 @@ import argparse
 from configparser import ConfigParser
 
 SYSTEM_CONF = '/etc/rst2arb.conf'
-VERSION = 0.1
+VERSION = 0.14
 
 
 class Style(object):
@@ -85,7 +85,7 @@ def main(args):
     if not (os.path.exists(SYSTEM_CONF) and os.path.isfile(SYSTEM_CONF)
             and os.access(SYSTEM_CONF, os.R_OK)):
         print('%s is missing or is not readable.\n' % SYSTEM_CONF)
-    user_conf = args.conf
+    user_conf = os.path.expanduser(args.conf)
     if not (os.path.exists(user_conf) and os.path.isfile(user_conf)
             and os.access(user_conf, os.R_OK)):
         print('%s is missing or is not readable.\n' % user_conf)
@@ -101,7 +101,6 @@ def main(args):
                               v['template'], v['latex_engine'])
             if 'other_options' in v.keys():
                 styles[k].set_options(json.loads(v['other_options']))
-                #styles[k].set_options(json.loads(config.get(k, "other_options")))
             if 'alias_name' in v.keys():
                 styles[k].set_alias_name(v['alias_name'])
                 alias_styles[v['alias_name']] = styles[k]
