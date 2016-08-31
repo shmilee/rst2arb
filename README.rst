@@ -18,7 +18,7 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
 准备
 ====
 
-* 安装 `texlive <http://www.latex-project.org/>`_ , `pandoc <http://johnmacfarlane.net/pandoc/>`_ 。
+* 安装 `texlive <http://www.latex-project.org/>`_ , `pandoc <http://johnmacfarlane.net/pandoc/>`_ , python3 。
 
 * 文本编辑器: `vim <http://www.vim.org>`_ 不错。  
 
@@ -27,47 +27,124 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
 使用
 ========
 
-.. code:: bash
+* test测试
 
-    make pre
-    export TEXMFHOME=./texmf
+  .. code:: bash
 
-* 生成 article, report：
-  
-.. code:: bash
+    make test
 
-    pandoc -f rst --template=latex-cjk.tex --latex-engine=xelatex -N --toc \  
-        -V cjkfont=cjkfont1 -V documentclass=[article|report] \
-        -V geometry:left=2cm,right=2cm,top=2.5cm,bottom=2.5cm \
-        -V date='\today' README.rst -o README.pdf
+* 安装到系统
 
-* 生成 beamer :
+  .. code:: bash
 
-.. code:: bash
+    make BIN_DIR=/usr/local/bin \
+    ETC_DIR=/usr/local/etc \
+    template_PATH=/usr/local/share/pandoc/user-templates install
 
-    pandoc -f rst --template=beamer-cjk.tex --latex-engine=xelatex -t beamer \
-        -V cjkfont=cjkfont1 -V theme=m -V colortheme=solarized -V date='\today' \
-        README.rst -o README.pdf
+* 查看已有 Style
 
+  .. code:: bash
 
-* 利用脚本 rst2arb.sh
+    rst2arb --list
+    rst2arb -i article report beamer
+
+*  修改 `～/.rst2arb.conf`, 添加 Style
+
+  .. code::
+
+    [beamer_solarized]
+    alias_name    = bsolar
+    doc_class     = beamer
+    template      = /usr/local/share/pandoc/user-templates/beamer-cjk.tex
+    latex_engine  = xelatex
+    other_options = ["-V colortheme:solarized",
+                 "-V theme:default",
+                 ..........]
+
+* 生成 article, report, beamer
+
+  .. code:: bash
+
+    rst2arb -s article README.rst -o cache/article.pdf
+    rst2arb -s report README.rst -o cache/report.pdf
+    rst2arb -s beamer README.rst -o cache/beamer-default.pdf
+    rst2arb -s bsolar README.rst -o cache/beamer-solarized.pdf
 
 FAQ
 ====
 
-模板如何获得？
+模板如何制作？
 --------------
 
 1. 输出默认模板 :code:`pandoc -D latex >latex-cjk.tex`, :code:`pandoc -D beamer >beamer-cjk.tex`
 
-2. 编辑 \*-cjk.tex, 在 :code:`\ifxetex` 后添加
+2. 根据 `xeCJK 文档 <http://mirrors.ctan.org/macros/xetex/latex/xecjk/xeCJK.pdf>`_, 编辑 \*-cjk.tex.
+
+   将
 
 .. code:: latex
 
-    % SUPPORT for Chinese
-    $if(cjkfont)$
-      \usepackage{$cjkfont$}
+    $if(CJKmainfont)$
+        \usepackage{xeCJK}
+        \setCJKmainfont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKmainfont$}
     $endif$
+
+   替换为
+
+.. code:: latex
+
+    $if(xeCJK)$
+        \usepackage[$for(xeCJK)$$xeCJK$$sep$,$endfor$]{xeCJK}
+    $endif$
+    $if(ctex)$
+        \usepackage[$for(ctex)$$ctex$$sep$,$endfor$]{ctex}
+    $endif$
+    $if(CJKmainfont)$
+        \setCJKmainfont[$for(CJKmainfontoptions)$$CJKmainfontoptions$$sep$,$endfor$]{$CJKmainfont$}
+    $endif$
+    $if(CJKsansfont)$
+        \setCJKsansfont[$for(CJKsansfontoptions)$$CJKsansfontoptions$$sep$,$endfor$]{$CJKsansfont$}
+    $endif$
+    $if(CJKmonofont)$
+        \setCJKmonofont[$for(CJKmonofontoptions)$$CJKmonofontoptions$$sep$,$endfor$]{$CJKmonofont$}
+    $endif$
+    $if(inputfile)$
+        \input{$inputfile$}
+    $endif$
+
+3. 在 `/etc/rst2arb.conf` 或 `~/.rst2arb.conf` 中，设定常用字体。
+
+   默认示例：
+    
+   西文字体,
+
+.. code:: bash
+
+    mainfont:'Times New Roman', or 'DejaVu Serif'
+    sansfont:Verdana, or Arial
+    monofont:Monaco, or 'Courier New'
+
+   中文字体:
+
+.. code:: bash
+
+    xeCJK:CJKspace=true,CJKmath=true,xCJKecglue=true,CheckSingle=true,PlainEquation=true,PunctStyle=CCT
+    ctex:UTF8,heading=true
+
+    CJKmainfont:SimSun
+    CJKmainfontoptions:BoldFont=SimHei,ItalicFont=KaiTi,AutoFakeSlant,FallBack='WenQuanYi Micro Hei'
+
+    CJKsansfont:SimHei
+    CJKsansfontoptions:AutoFakeBold,AutoFakeSlant,FallBack='Microsoft YaHei'
+
+    CJKmonofont:'WenQuanYi Micro Hei Mono'
+    CJKmonofontoptions:AutoFakeBold,AutoFakeSlant,FallBack='WenQuanYi Zen Hei Mono'
+
+4. 指定 `inputfile`, 添加额外设定。一个示例： `myinput.tex`
+
+.. code:: bash
+
+    -V inputfile:./myinput.tex
 
 beamer 的 theme colortheme 可设定值有那些？
 -------------------------------------------
@@ -81,4 +158,4 @@ beamer 的 theme colortheme 可设定值有那些？
 TODO
 ====
 
-自定义部分写成 latex Package。
+* 添加一些其他模板
