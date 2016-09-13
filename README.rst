@@ -48,7 +48,7 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
     rst2arb --list
     rst2arb -i article report beamer
 
-*  修改 `～/.rst2arb.conf`, 添加 Style
+* 修改 `～/.rst2arb.conf`, 添加 Style
 
   .. code::
 
@@ -82,7 +82,7 @@ FAQ
 
    将
 
-.. code:: latex
+   .. code:: latex
 
     $if(CJKmainfont)$
         \usepackage{xeCJK}
@@ -91,7 +91,7 @@ FAQ
 
    替换为
 
-.. code:: latex
+   .. code:: latex
 
     $if(xeCJK)$
         \usepackage[$for(xeCJK)$$xeCJK$$sep$,$endfor$]{xeCJK}
@@ -118,7 +118,7 @@ FAQ
     
    西文字体,
 
-.. code:: bash
+   .. code:: bash
 
     mainfont:'Times New Roman', or 'DejaVu Serif'
     sansfont:Verdana, or Arial
@@ -126,7 +126,7 @@ FAQ
 
    中文字体:
 
-.. code:: bash
+   .. code:: bash
 
     xeCJK:CJKspace=true,CJKmath=true,xCJKecglue=true,CheckSingle=true,PlainEquation=true,PunctStyle=CCT
     ctex:UTF8,heading=true
@@ -142,7 +142,7 @@ FAQ
 
 4. 指定 `inputfile`, 添加额外设定。一个示例： `myinput.tex`
 
-.. code:: bash
+   .. code:: bash
 
     -V inputfile:./myinput.tex
 
