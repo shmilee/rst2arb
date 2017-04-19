@@ -2,12 +2,15 @@
 
 _gitname="rst2arb"
 pkgname=rst2arb
-pkgver=0.14
+pkgver=0.14.16
 pkgrel=1
 pkgdesc="Convert ReST to article, report and beamer."
 license=('GPL')
 arch=(any)
-depends=('texlive-langcjk' 'pandoc' 'python')
+depends=('pandoc' 'python')
+optdepends=('texlive-langchinese: for Chinese texts support'
+            'texlive-langjapanese: for Japanese texts support'
+            'texlive-langkorean: for  Korean texts support')
 url='https://github.com/shmilee/rst2arb'
 source=("git://github.com/shmilee/${_gitname}.git"
         "git+https://github.com/jrnold/beamercolorthemesolarized.git"
@@ -17,7 +20,7 @@ md5sums=('SKIP' 'SKIP' 'SKIP')
 
 pkgver() {
   cd "$srcdir/$_gitname"
-  echo -n "0.$(git rev-list --count HEAD)."
+  echo -n "0.14.$(git rev-list --count HEAD)."
   git describe --always|sed 's|-|.|g'
 }
 prepare() {
