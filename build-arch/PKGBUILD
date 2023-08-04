@@ -2,7 +2,7 @@
 
 _gitname="rst2arb"
 pkgname=rst2arb
-pkgver=0.16.a2fabbc
+pkgver=0.20.1c7bf54
 pkgrel=1
 pkgdesc="Convert ReST to article, report and beamer."
 license=('GPL')
@@ -13,11 +13,10 @@ optdepends=('texlive-langchinese: for Chinese texts support'
             'texlive-langkorean: for  Korean texts support')
 makedepends=('git' 'texlive-core')
 url='https://github.com/shmilee/rst2arb'
-source=("git://github.com/shmilee/${_gitname}.git"
-        "git+https://github.com/jrnold/beamercolorthemesolarized.git"
-        "git+https://github.com/matze/mtheme.git")
+source=("git+https://github.com/shmilee/${_gitname}.git"
+        "git+https://github.com/jrnold/beamercolorthemesolarized.git")
 install=texlive.install
-md5sums=('SKIP' 'SKIP' 'SKIP')
+md5sums=('SKIP' 'SKIP')
 
 pkgver() {
   cd "$srcdir/$_gitname"
@@ -29,8 +28,8 @@ prepare() {
   git submodule init
   git config submodule.latex/beamercolorthemesolarized.url \
       "$srcdir/beamercolorthemesolarized"
-  git config submodule.latex/beamerthemem.url \
-      "$srcdir/mtheme"
+  git clone "$srcdir/beamercolorthemesolarized" \
+      "latex/beamercolorthemesolarized"
 }
 
 build() {
