@@ -17,12 +17,9 @@ install: pre rst2arb.py rst2arb.conf
 	install -Dm644 rst2arb.conf $(DESTDIR)$(ETC_DIR)/rst2arb.conf
 	sed -i "s|\(^template.*= \)./\(latex-cjk.tex\)|\1$(template_PATH)/\2|" \
 		$(DESTDIR)$(ETC_DIR)/rst2arb.conf
-	sed -i "s|\(^template.*= \)./\(beamer-cjk.tex\)|\1$(template_PATH)/\2|" \
-		$(DESTDIR)$(ETC_DIR)/rst2arb.conf
 	sed -i "s|\(SYSTEM_CONF.*=.*\)/etc/\(rst2arb.conf.*\)|\1$(ETC_DIR)/\2|" \
 		$(DESTDIR)$(BIN_DIR)/rst2arb
 	find latex/ -name '*.sty' -exec install -Dm644 {} $(DESTDIR)/$(TEXMFDIST)/tex/{} \;
-	install -Dm644 beamer-cjk.tex $(DESTDIR)/$(template_PATH)/beamer-cjk.tex
 	install -Dm644 latex-cjk.tex $(DESTDIR)/$(template_PATH)/latex-cjk.tex
 
 clean:

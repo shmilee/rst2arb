@@ -55,7 +55,7 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
     [beamer_solarized]
     alias_name    = bsolar
     doc_class     = beamer
-    template      = /usr/local/share/pandoc/user-templates/beamer-cjk.tex
+    template      = /usr/local/share/pandoc/user-templates/latex-cjk.tex
     latex_engine  = xelatex
     other_options = ["-V colortheme:solarized",
                  "-V theme:default",
@@ -76,7 +76,7 @@ FAQ
 模板如何制作？
 --------------
 
-1. 输出默认模板 :code:`pandoc -D latex >latex-cjk.tex`, :code:`pandoc -D beamer >beamer-cjk.tex`
+1. 输出默认模板 :code:`pandoc -D latex >latex-cjk.tex`.
 
 2. 根据 `xeCJK 文档 <http://mirrors.ctan.org/macros/xetex/latex/xecjk/xeCJK.pdf>`_, 编辑 \*-cjk.tex.
 
@@ -85,8 +85,10 @@ FAQ
    .. code:: latex
 
     $if(CJKmainfont)$
+      \ifXeTeX
         \usepackage{xeCJK}
         \setCJKmainfont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKmainfont$}
+      \fi
     $endif$
 
    替换为
@@ -94,7 +96,9 @@ FAQ
    .. code:: latex
 
     $if(xeCJK)$
+      \ifXeTeX
         \usepackage[$for(xeCJK)$$xeCJK$$sep$,$endfor$]{xeCJK}
+      \fi
     $endif$
     $if(ctex)$
         \usepackage[$for(ctex)$$ctex$$sep$,$endfor$]{ctex}
@@ -128,7 +132,7 @@ FAQ
 
    .. code:: bash
 
-    xeCJK:CJKspace=true,CJKmath=true,xCJKecglue=true,CheckSingle=true,PlainEquation=true,PunctStyle=CCT
+    xeCJK:CJKspace=true,CheckSingle=true,PlainEquation=true,PunctStyle=CCT
     ctex:UTF8,heading=true
 
     CJKmainfont:SimSun

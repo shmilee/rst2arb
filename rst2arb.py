@@ -76,7 +76,7 @@ class Style(object):
             opt.append(' -V documentclass:%s' % self.__doc_class)
         elif self.__doc_class == 'beamer':
             opt.append(' -t beamer')
-        opt.append(' --template="%s" --latex-engine=%s %s' %
+        opt.append(' --template="%s" --pdf-engine=%s %s' %
                    (self.__template, self.__engine, ' '.join(self.__options)))
         return ''.join(opt)
 

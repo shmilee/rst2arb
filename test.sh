@@ -15,7 +15,6 @@ export TEXMFHOME=./cache/texmf
 install -Dm644 rst2arb.conf cache/rst2arb.conf
 install -Dm755 rst2arb.py cache/rst2arb
 sed -i "s|\(^template.*= \)./\(latex-cjk.tex\)|\1$(pwd)/\2|" cache/rst2arb.conf
-sed -i "s|\(^template.*= \)./\(beamer-cjk.tex\)|\1$(pwd)/\2|" cache/rst2arb.conf
 sed -i "s|\(SYSTEM_CONF.*=.*\)/etc/\(rst2arb.conf.*\)|\1$(pwd)/\2|" cache/rst2arb
 cmd='./cache/rst2arb -f ./cache/rst2arb.conf'
 
