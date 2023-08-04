@@ -46,7 +46,7 @@ pandoc 配合 xelatex ,将含 cjk 文字的 rst 文档 转为 article report 或
   .. code:: bash
 
     rst2arb --list
-    rst2arb -i article report beamer
+    rst2arb -i article report beamer article-eisvogel
 
 * 修改 `～/.rst2arb.conf`, 添加 Style
 
@@ -149,6 +149,22 @@ FAQ
    .. code:: bash
 
     -V inputfile:./myinput.tex
+
+其他模版 eisvogel
+-----------------
+
+1. 下载 `eisvogel.tex` 。
+
+   .. code:: bash
+
+    VER=2.4.0
+    wget -c "https://raw.githubusercontent.com/Wandmalfarbe/pandoc-latex-template/v${VER}/eisvogel.tex" \
+        -O "eisvogel-v${VER}.tex"
+
+2. 类似 `latex-cjk.tex`, 编辑修改模版。
+   [Usage](https://github.com/Wandmalfarbe/pandoc-latex-template/)
+
+3. `rst2arb.conf` 内设置字体。
 
 beamer 的 theme colortheme 可设定值有那些？
 -------------------------------------------

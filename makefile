@@ -17,10 +17,13 @@ install: pre rst2arb.py rst2arb.conf
 	install -Dm644 rst2arb.conf $(DESTDIR)$(ETC_DIR)/rst2arb.conf
 	sed -i "s|\(^template.*= \)./\(latex-cjk.tex\)|\1$(template_PATH)/\2|" \
 		$(DESTDIR)$(ETC_DIR)/rst2arb.conf
+	sed -i "s|\(^template.*= \)./\(eisvogel-v2.4.0.tex\)|\1$(template_PATH)/\2|" \
+		$(DESTDIR)$(ETC_DIR)/rst2arb.conf
 	sed -i "s|\(SYSTEM_CONF.*=.*\)/etc/\(rst2arb.conf.*\)|\1$(ETC_DIR)/\2|" \
 		$(DESTDIR)$(BIN_DIR)/rst2arb
 	find latex/ -name '*.sty' -exec install -Dm644 {} $(DESTDIR)/$(TEXMFDIST)/tex/{} \;
 	install -Dm644 latex-cjk.tex $(DESTDIR)/$(template_PATH)/latex-cjk.tex
+	install -Dm644 eisvogel-v2.4.0.tex $(DESTDIR)/$(template_PATH)/eisvogel-v2.4.0.tex
 
 clean:
 	-rm -r cache/*

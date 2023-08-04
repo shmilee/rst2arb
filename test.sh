@@ -9,13 +9,10 @@ if ! which xelatex 2>&1 >/dev/null; then
 fi
 
 DIR="$(kpsewhich -var-value=TEXMFDIST)/tex/latex"
-find latex/ -name '*.sty' -exec install -Dm644 {} ./cache/texmf/tex/{} \;
-export TEXMFHOME=./cache/texmf
 
-install -Dm644 rst2arb.conf cache/rst2arb.conf
-install -Dm755 rst2arb.py cache/rst2arb
-sed -i "s|\(^template.*= \)./\(latex-cjk.tex\)|\1$(pwd)/\2|" cache/rst2arb.conf
-sed -i "s|\(SYSTEM_CONF.*=.*\)/etc/\(rst2arb.conf.*\)|\1$(pwd)/\2|" cache/rst2arb
+make install DESTDIR=./cache BIN_DIR= ETC_DIR= template_PATH=. TEXMFDIST=texmf
+sed -i "s|\(SYSTEM_CONF = '\).*/\(rst2arb.conf.*\)|\1$(pwd)/\2|" ./cache/rst2arb
+export TEXMFHOME=./cache/texmf
 cmd='./cache/rst2arb -f ./cache/rst2arb.conf'
 
 # article
@@ -29,6 +26,11 @@ $cmd -s r README.rst -o cache/report.pdf
 # beamer
 $cmd -i beamer
 $cmd -s b README.rst -o cache/beamer-default.pdf
+
+# article-eisvogel
+$cmd -i article-eisvogel
+$cmd -s ae README.rst -o cache/article-eisvogel.pdf
+
 
 cmd='./cache/rst2arb -f ./cache/rst2arb-beamer.conf'
 
