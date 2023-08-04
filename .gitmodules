@@ -1,6 +1,3 @@
 [submodule "latex/beamercolorthemesolarized"]
 	path = latex/beamercolorthemesolarized
 	url = https://github.com/jrnold/beamercolorthemesolarized.git
-[submodule "latex/beamerthemem"]
-	path = latex/beamerthemem
-	url = https://github.com/matze/mtheme.git

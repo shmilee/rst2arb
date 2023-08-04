@@ -32,17 +32,12 @@ $cmd -s b README.rst -o cache/beamer-default.pdf
 
 cmd='./cache/rst2arb -f ./cache/rst2arb-beamer.conf'
 
-# beamer, theme:m
-sed 's/\( theme\):default/\1:m/' ./cache/rst2arb.conf > ./cache/rst2arb-beamer.conf
-$cmd -i beamer
-$cmd -s b README.rst -o cache/beamer-theme-m.pdf
-
 # beamer, colortheme:solarized
 sed 's/\(colortheme\):default/\1:solarized/' ./cache/rst2arb.conf > ./cache/rst2arb-beamer.conf
 $cmd -i beamer
 $cmd -s b README.rst -o cache/beamer-colortheme-solarized.pdf
 
-# beamer, others
+# beamer, system theme & colortheme
 if [[ x$1 == xall ]]; then
     themes=($(find $DIR -name 'beamertheme*.sty' | sed 's|^.*/beamertheme||;s|\.sty$||'))
     colorthemes=($(find $DIR -name 'beamercolortheme*.sty' | sed 's|^.*/beamercolortheme||;s|\.sty$||'))
