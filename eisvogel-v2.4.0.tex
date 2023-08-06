@@ -731,14 +731,15 @@ $endif$
 $endif$
 
 $if(indent)$
+\usepackage{indentfirst}
 $else$
 %
 % remove paragraph indention
 %
 \setlength{\parindent}{0pt}
+$endif$
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
-$endif$
 
 %
 %

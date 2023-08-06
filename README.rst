@@ -171,19 +171,20 @@ FAQ
 
 3. `rst2arb.conf` 内设置字体。其他设置 `Usage <https://github.com/Wandmalfarbe/pandoc-latex-template/>`_
 
-4. fix: lost paragraph indention
+4. fix: lost paragraph indention.
 
-   .. code:: dpatch
+   .. code::
 
     +$if(indent)$
+    +\usepackage{indentfirst}
     +$else$
      %
      % remove paragraph indention
      %
      \setlength{\parindent}{0pt}
+    +$endif$
      \setlength{\parskip}{6pt plus 2pt minus 1pt}
      \setlength{\emergencystretch}{3em}  % prevent overfull lines
-    +$endif$
 
 beamer 的 theme colortheme 可设定值有那些？
 -------------------------------------------
