@@ -88,6 +88,12 @@ FAQ
       \ifXeTeX
         \usepackage{xeCJK}
         \setCJKmainfont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKmainfont$}
+        $if(CJKsansfont)$
+          \setCJKsansfont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKsansfont$}
+        $endif$
+        $if(CJKmonofont)$
+          \setCJKmonofont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKmonofont$}
+        $endif$
       \fi
     $endif$
 
@@ -162,9 +168,22 @@ FAQ
         -O "eisvogel-v${VER}.tex"
 
 2. 类似 `latex-cjk.tex`, 编辑修改模版。
-   [Usage](https://github.com/Wandmalfarbe/pandoc-latex-template/)
 
-3. `rst2arb.conf` 内设置字体。
+3. `rst2arb.conf` 内设置字体。其他设置 `Usage <https://github.com/Wandmalfarbe/pandoc-latex-template/>`_
+
+4. fix: lost paragraph indention
+
+   .. code:: dpatch
+
+    +$if(indent)$
+    +$else$
+     %
+     % remove paragraph indention
+     %
+     \setlength{\parindent}{0pt}
+     \setlength{\parskip}{6pt plus 2pt minus 1pt}
+     \setlength{\emergencystretch}{3em}  % prevent overfull lines
+    +$endif$
 
 beamer 的 theme colortheme 可设定值有那些？
 -------------------------------------------

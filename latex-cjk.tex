@@ -33,6 +33,9 @@ $if(background-image)$
 \usebackgroundtemplate{%
   \includegraphics[width=\paperwidth]{$background-image$}%
 }
+% In beamer background-image does not work well when other images are used, so this is the workaround
+\pgfdeclareimage[width=\paperwidth,height=\paperheight]{background}{$background-image$}
+\usebackgroundtemplate{\pgfuseimage{background}}
 $endif$
 \usepackage{pgfpages}
 \setbeamertemplate{caption}[numbered]
@@ -82,11 +85,6 @@ $if(beamerarticle)$
 \usepackage{beamerarticle} % needs to be loaded first
 $endif$
 \usepackage{amsmath,amssymb}
-$if(fontfamily)$
-\usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
-$else$
-\usepackage{lmodern}
-$endif$
 $if(linestretch)$
 \usepackage{setspace}
 $endif$
@@ -98,15 +96,48 @@ $endif$
 \else % if luatex or xetex
 $if(mathspec)$
   \ifXeTeX
-    \usepackage{mathspec}
+    \usepackage{mathspec} % this also loads fontspec
   \else
-    \usepackage{unicode-math}
+    \usepackage{unicode-math} % this also loads fontspec
   \fi
 $else$
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
 $endif$
-  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures{Scale=MatchLowercase}$-- must come before Beamer theme
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+$if(fontfamily)$
+$else$
+$-- Set default font before Beamer theme so the theme can override it
+\usepackage{lmodern}
+$endif$
+$-- Set Beamer theme before user font settings so they can override theme
+$if(beamer)$
+$if(theme)$
+\usetheme[$for(themeoptions)$$themeoptions$$sep$,$endfor$]{$theme$}
+$endif$
+$if(colortheme)$
+\usecolortheme{$colortheme$}
+$endif$
+$if(fonttheme)$
+\usefonttheme{$fonttheme$}
+$endif$
+$if(mainfont)$
+\usefonttheme{serif} % use mainfont rather than sansfont for slide text
+$endif$
+$if(innertheme)$
+\useinnertheme{$innertheme$}
+$endif$
+$if(outertheme)$
+\useoutertheme{$outertheme$}
+$endif$
+$endif$
+$-- User font settings (must come after default font and Beamer theme)
+$if(fontfamily)$
+\usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
+$endif$
+\ifPDFTeX\else
+  % xetex/luatex font selection
 $if(mainfont)$
   \setmainfont[$for(mainfontoptions)$$mainfontoptions$$sep$,$endfor$]{$mainfont$}
 $endif$
@@ -130,26 +161,26 @@ $else$
   \setmathfont[$for(mathfontoptions)$$mathfontoptions$$sep$,$endfor$]{$mathfont$}
 $endif$
 $endif$
-$if(xeCJK)$
-  \ifXeTeX
-    \usepackage[$for(xeCJK)$$xeCJK$$sep$,$endfor$]{xeCJK}
-  \fi
-$endif$
-$if(ctex)$
-    \usepackage[$for(ctex)$$ctex$$sep$,$endfor$]{ctex}
-$endif$
-$if(CJKmainfont)$
-    \setCJKmainfont[$for(CJKmainfontoptions)$$CJKmainfontoptions$$sep$,$endfor$]{$CJKmainfont$}
-$endif$
-$if(CJKsansfont)$
-    \setCJKsansfont[$for(CJKsansfontoptions)$$CJKsansfontoptions$$sep$,$endfor$]{$CJKsansfont$}
-$endif$
-$if(CJKmonofont)$
-    \setCJKmonofont[$for(CJKmonofontoptions)$$CJKmonofontoptions$$sep$,$endfor$]{$CJKmonofont$}
-$endif$
-$if(inputfile)$
-    \input{$inputfile$}
-$endif$
+    $if(xeCJK)$
+      \ifXeTeX
+        \usepackage[$for(xeCJK)$$xeCJK$$sep$,$endfor$]{xeCJK}
+      \fi
+    $endif$
+    $if(ctex)$
+        \usepackage[$for(ctex)$$ctex$$sep$,$endfor$]{ctex}
+    $endif$
+    $if(CJKmainfont)$
+        \setCJKmainfont[$for(CJKmainfontoptions)$$CJKmainfontoptions$$sep$,$endfor$]{$CJKmainfont$}
+    $endif$
+    $if(CJKsansfont)$
+        \setCJKsansfont[$for(CJKsansfontoptions)$$CJKsansfontoptions$$sep$,$endfor$]{$CJKsansfont$}
+    $endif$
+    $if(CJKmonofont)$
+        \setCJKmonofont[$for(CJKmonofontoptions)$$CJKmonofontoptions$$sep$,$endfor$]{$CJKmonofont$}
+    $endif$
+    $if(inputfile)$
+        \input{$inputfile$}
+    $endif$
 $if(luatexjapresetoptions)$
   \ifLuaTeX
     \usepackage[$for(luatexjapresetoptions)$$luatexjapresetoptions$$sep$,$endfor$]{luatexja-preset}
@@ -168,7 +199,7 @@ $if(zero-width-non-joiner)$
 \def\zerowidthnonjoiner{%
   % Prevent ligatures and adjust kerning, but still support hyphenating.
   \texorpdfstring{%
-    \textormath{\nobreak\discretionary{-}{}{\kern.03em}%
+    \TextOrMath{\nobreak\discretionary{-}{}{\kern.03em}%
       \ifvmode\else\nobreak\hskip\z@skip\fi}{}%
   }{}%
 }
@@ -180,26 +211,6 @@ $if(zero-width-non-joiner)$
   \protected\def ^^^^200c{\zerowidthnonjoiner}
 \fi
 %% End of ZWNJ support
-$endif$
-$if(beamer)$
-$if(theme)$
-\usetheme[$for(themeoptions)$$themeoptions$$sep$,$endfor$]{$theme$}
-$endif$
-$if(colortheme)$
-\usecolortheme{$colortheme$}
-$endif$
-$if(fonttheme)$
-\usefonttheme{$fonttheme$}
-$endif$
-$if(mainfont)$
-\usefonttheme{serif} % use mainfont rather than sansfont for slide text
-$endif$
-$if(innertheme)$
-\useinnertheme{$innertheme$}
-$endif$
-$if(outertheme)$
-\useoutertheme{$outertheme$}
-$endif$
 $endif$
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -224,38 +235,6 @@ $if(verbatim-in-note)$
 \usepackage{fancyvrb}
 $endif$
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-$if(title-meta)$
-  pdftitle={$title-meta$},
-$endif$
-$if(author-meta)$
-  pdfauthor={$author-meta$},
-$endif$
-$if(lang)$
-  pdflang={$lang$},
-$endif$
-$if(subject)$
-  pdfsubject={$subject$},
-$endif$
-$if(keywords)$
-  pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
-$endif$
-$if(colorlinks)$
-  colorlinks=true,
-  linkcolor={$if(linkcolor)$$linkcolor$$else$Maroon$endif$},
-  filecolor={$if(filecolor)$$filecolor$$else$Maroon$endif$},
-  citecolor={$if(citecolor)$$citecolor$$else$Blue$endif$},
-  urlcolor={$if(urlcolor)$$urlcolor$$else$Blue$endif$},
-$else$
-  hidelinks,
-$endif$
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
-$if(verbatim-in-note)$
-\VerbatimFootnotes % allow verbatim text in footnotes
-$endif$
 $if(geometry)$
 $if(beamer)$
 \geometry{$for(geometry)$$geometry$$sep$,$endfor$}
@@ -316,15 +295,17 @@ $if(graphics)$
 \def\fps@figure{htbp}
 \makeatother
 $endif$
-$if(links-as-notes)$
-% Make links footnotes instead of hotlinks:
-\DeclareRobustCommand{\href}[2]{#2\footnote{\url{#1}}}
+$if(svg)$
+\usepackage{svg}
 $endif$
 $if(strikeout)$
 $-- also used for underline
-\usepackage[normalem]{ulem}
-% Avoid problems with \sout in headers with hyperref
-\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+\ifLuaTeX
+  \usepackage{luacolor}
+  \usepackage[soul]{lua-ul}
+\else
+  \usepackage{soul}
+\fi
 $endif$
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
@@ -333,6 +314,9 @@ $if(numbersections)$
 \setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
 $else$
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+$endif$
+$if(subfigure)$
+\usepackage{subcaption}
 $endif$
 $if(beamer)$
 $else$
@@ -382,9 +366,20 @@ $if(lang)$
 \else
 \usepackage[bidi=default]{babel}
 \fi
+$if(babel-lang)$
 \babelprovide[main,import]{$babel-lang$}
+$if(mainfont)$
+\ifPDFTeX
+\else
+\babelfont{rm}[$for(mainfontoptions)$$mainfontoptions$$sep$,$endfor$]{$mainfont$}
+\fi
+$endif$
+$endif$
 $for(babel-otherlangs)$
 \babelprovide[import]{$babel-otherlangs$}
+$endfor$
+$for(babelfonts/pairs)$
+\babelfont[$babelfonts.key$]{rm}{$babelfonts.value$}
 $endfor$
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands
@@ -421,6 +416,45 @@ $endif$
 $if(csquotes)$
 \usepackage{csquotes}
 $endif$
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{$if(urlstyle)$$urlstyle$$else$same$endif$}
+$if(links-as-notes)$
+% Make links footnotes instead of hotlinks:
+\DeclareRobustCommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+$if(verbatim-in-note)$
+\VerbatimFootnotes % allow verbatim text in footnotes
+$endif$
+\hypersetup{
+$if(title-meta)$
+  pdftitle={$title-meta$},
+$endif$
+$if(author-meta)$
+  pdfauthor={$author-meta$},
+$endif$
+$if(lang)$
+  pdflang={$lang$},
+$endif$
+$if(subject)$
+  pdfsubject={$subject$},
+$endif$
+$if(keywords)$
+  pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
+$endif$
+$if(colorlinks)$
+  colorlinks=true,
+  linkcolor={$if(linkcolor)$$linkcolor$$else$Maroon$endif$},
+  filecolor={$if(filecolor)$$filecolor$$else$Maroon$endif$},
+  citecolor={$if(citecolor)$$citecolor$$else$Blue$endif$},
+  urlcolor={$if(urlcolor)$$urlcolor$$else$Blue$endif$},
+$else$
+$if(boxlinks)$
+$else$
+  hidelinks,
+$endif$
+$endif$
+  pdfcreator={LaTeX via pandoc}}
 
 $if(title)$
 \title{$title$$if(thanks)$\thanks{$thanks$}$endif$}

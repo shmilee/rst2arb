@@ -2,16 +2,16 @@
 
 _gitname="rst2arb"
 pkgname=rst2arb
-pkgver=0.20.1c7bf54
+pkgver=0.22.30b7e5a
 pkgrel=1
 pkgdesc="Convert ReST to article, report and beamer."
 license=('GPL')
 arch=(any)
-depends=('pandoc' 'python')
+depends=('pandoc' 'python' 'texlive-latexextra' 'texlive-fontsrecommended')
 optdepends=('texlive-langchinese: for Chinese texts support'
             'texlive-langjapanese: for Japanese texts support'
             'texlive-langkorean: for  Korean texts support')
-makedepends=('git' 'texlive-core')
+makedepends=('git')
 url='https://github.com/shmilee/rst2arb'
 source=("git+https://github.com/shmilee/${_gitname}.git"
         "git+https://github.com/jrnold/beamercolorthemesolarized.git")
