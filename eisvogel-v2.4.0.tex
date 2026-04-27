@@ -364,6 +364,7 @@ $else$
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
 $endif$
+\newcounter{none} % for unnumbered tables
 $endif$
 % add backlinks to footnote references, cf. https://tex.stackexchange.com/questions/302266/make-footnote-clickable-both-ways
 $if(footnotes-disable-backlinks)$
